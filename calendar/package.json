@@ -2,6 +2,7 @@
   "name": "calendar",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://kasiakaz14.github.io/Calendar-scheduler/",
   "dependencies": {
     "@devexpress/dx-react-core": "^4.0.8",
     "@devexpress/dx-react-grid": "^4.0.8",
