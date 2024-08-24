@@ -35,6 +35,7 @@ Aby zainstalować i uruchomić aplikację lokalnie, wykonaj poniższe kroki:
    
 2. **Zainstaluj zależności**
 
+```bash
    npm install
 
 4. **Skonfiguruj Firebase**
@@ -43,6 +44,7 @@ Aby zainstalować i uruchomić aplikację lokalnie, wykonaj poniższe kroki:
 
 5. **Uruchom aplikację**
 
+```bash
    npm start
 
 6. ## Autor
