@@ -23,5 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 
 #database
-/src/calendar/data.js
+/src/data.js
 
