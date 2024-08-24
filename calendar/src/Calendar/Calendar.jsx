@@ -34,41 +34,63 @@ const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
 
   useEffect(() => {
+    // Subscribe to Firestore collection
     const unsubscribe = onSnapshot(collection(db, "events"), (snapshot) => {
-      const events = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-        startDate: doc.data().startDate.toDate(), // convert Date to Timestamp
-        endDate: doc.data().endDate.toDate(), // convert Date to Timestamp
-      }));
+      const events = snapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          title: data.title,
+          startDate: data.startDate ? data.startDate.toDate() : new Date(), // Handle null values
+          endDate: data.endDate ? data.endDate.toDate() : new Date(), // Handle null values
+        };
+      });
       setData(events);
     });
 
-    return () => unsubscribe();
+    return () => unsubscribe(); // Cleanup subscription on unmount
   }, []);
 
   const commitChanges = async ({ added, changed, deleted }) => {
-    if (added) {
-      const addedEvent = {
-        ...added,
-        startDate: Timestamp.fromDate(new Date(added.startDate)), // convert Date to Timestamp
-        endDate: Timestamp.fromDate(new Date(added.endDate)), // convert Date do Timestamp
-      };
-      await addDoc(collection(db, "events"), addedEvent);
-    }
-    if (changed) {
-      const eventId = Object.keys(changed)[0];
-      const changedEvent = {
-        ...changed[eventId],
-        startDate: Timestamp.fromDate(new Date(changed[eventId].startDate)), // convert Date to Timestamp
-        endDate: Timestamp.fromDate(new Date(changed[eventId].endDate)), // convert Date to Timestamp
-      };
-      const eventRef = doc(db, "events", eventId);
-      await updateDoc(eventRef, changedEvent);
-    }
-    if (deleted !== undefined) {
-      const eventRef = doc(db, "events", deleted);
-      await deleteDoc(eventRef);
+    try {
+      // Adding a new event
+      if (added) {
+        const addedEvent = {
+          ...added,
+          startDate: added.startDate
+            ? Timestamp.fromDate(new Date(added.startDate))
+            : null,
+          endDate: added.endDate
+            ? Timestamp.fromDate(new Date(added.endDate))
+            : null,
+        };
+        await addDoc(collection(db, "events"), addedEvent);
+      }
+
+      // Changing an existing event
+      if (changed) {
+        const eventId = Object.keys(changed)[0];
+        const changedEvent = {
+          ...data.find((event) => event.id === eventId), // Preserve existing data
+          ...changed[eventId], // Apply changes
+          startDate: changed[eventId].startDate
+            ? Timestamp.fromDate(new Date(changed[eventId].startDate))
+            : data.find((event) => event.id === eventId).startDate,
+          endDate: changed[eventId].endDate
+            ? Timestamp.fromDate(new Date(changed[eventId].endDate))
+            : data.find((event) => event.id === eventId).endDate,
+        };
+        const eventRef = doc(db, "events", eventId);
+        await updateDoc(eventRef, changedEvent);
+      }
+
+      // Deleting an event
+      if (deleted !== undefined) {
+        const eventRef = doc(db, "events", deleted);
+        await deleteDoc(eventRef);
+      }
+    } catch (error) {
+      console.error("Error handling document: ", error);
     }
   };
 
