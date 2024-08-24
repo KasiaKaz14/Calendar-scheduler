@@ -47,7 +47,7 @@ Aby zainstalować i uruchomić aplikację lokalnie, wykonaj poniższe kroki:
    ```bash
    npm start
 
-6. ## Autor
+ ## Autor
 
    https://github.com/KasiaKaz14
    
