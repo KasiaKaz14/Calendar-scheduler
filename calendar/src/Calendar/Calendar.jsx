@@ -53,7 +53,6 @@ const Calendar = () => {
 
   const commitChanges = async ({ added, changed, deleted }) => {
     try {
-      // Adding a new event
       if (added) {
         const addedEvent = {
           ...added,
@@ -67,7 +66,6 @@ const Calendar = () => {
         await addDoc(collection(db, "events"), addedEvent);
       }
 
-      // Changing an existing event
       if (changed) {
         const eventId = Object.keys(changed)[0];
         const changedEvent = {
@@ -75,16 +73,15 @@ const Calendar = () => {
           ...changed[eventId], // Apply changes
           startDate: changed[eventId].startDate
             ? Timestamp.fromDate(new Date(changed[eventId].startDate))
-            : data.find((event) => event.id === eventId).startDate,
+            : data.find((event) => event.id === eventId).startDate, // Preserve existing date if not changed
           endDate: changed[eventId].endDate
             ? Timestamp.fromDate(new Date(changed[eventId].endDate))
-            : data.find((event) => event.id === eventId).endDate,
+            : data.find((event) => event.id === eventId).endDate, // Preserve existing date if not changed
         };
         const eventRef = doc(db, "events", eventId);
         await updateDoc(eventRef, changedEvent);
       }
 
-      // Deleting an event
       if (deleted !== undefined) {
         const eventRef = doc(db, "events", deleted);
         await deleteDoc(eventRef);
