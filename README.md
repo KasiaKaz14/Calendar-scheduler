@@ -31,7 +31,7 @@ Aby zainstalować i uruchomić aplikację lokalnie, wykonaj poniższe kroki:
 
    ```bash
    git clone https://github.com/twoj-uzytkownik/nazwa-repozytorium.git
-   cd nazwa-repozytorium
+   cd nazwa-repozytorium (Calendar-scheduler)
    
 2. **Zainstaluj zależności**
 
