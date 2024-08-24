@@ -2,7 +2,7 @@
 
 ## Opis projektu
 
-Ten projekt to kalendarz stworzony w React, który pozwala na wyświetlanie wydarzeń w widoku dziennym, tygodniowym oraz miesięcznym. Użytkownicy mogą dodawać, edytować oraz usuwać wydarzenia. Dane są przechowywane w bazie danych Firebase Firestore.
+Powyższy projekt to kalendarz stworzony w React, który pozwala na wyświetlanie wydarzeń w widoku dziennym, tygodniowym oraz miesięcznym. Użytkownicy mogą dodawać, edytować oraz usuwać wydarzenia. Dane są przechowywane w bazie danych Firebase Firestore.
 
 ## Funkcjonalności
 
